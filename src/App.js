@@ -92,7 +92,6 @@ function App() {
   return (
     <EasybaseProvider ebconfig={ebconfig}>
       <Container />
-      <Container />
     </EasybaseProvider>
   );
 }
