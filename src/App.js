@@ -14,6 +14,9 @@ function Container() {
   useEffect(() => {
     configureFrame({ limit: 10, offset: 0, tableName: "LISTOFDATA" });
     sync();
+    // this *should* be [configureFrame, sync] because we want the useEffect hook to fire if
+    // those values change. However, easybase-react *always* updates them, so we need to pass
+    // an empty array. And then disable the warning in the linter. I consider this a bug in easybase.
     // eslint-disable-next-line
   }, []);
 
