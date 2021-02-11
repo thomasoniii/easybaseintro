@@ -5,13 +5,19 @@ import { EasybaseProvider, useEasybase } from "easybase-react";
 import ebconfig from "./ebconfig.js";
 
 function Container() {
+  // use easybase's hooks to access the data.
   const { Frame, useFrameEffect, configureFrame, sync } = useEasybase();
 
+  // use hooks to store our local state as we add new records.
+  // the first variable is the current value in this component instance, and the second
+  // is a setter so we can update it. They're used down below in the form to add new records.
   const [name, setName] = useState("");
   const [number, setNumber] = useState(0);
   const [othertext, setOtherText] = useState("");
 
   useEffect(() => {
+    // configureFrame sets up our Frame to access the appropriate list of data.
+    // in this case, it's only showing the first 10 rows, for the table LISTOFDATA
     configureFrame({ limit: 10, offset: 0, tableName: "LISTOFDATA" });
     sync();
     // this *should* be [configureFrame, sync] because we want the useEffect hook to fire if
@@ -59,12 +65,16 @@ function Container() {
         <div>
           <button
             onClick={() => {
+              // easybase's frames work like arrays. So we just push on a new record.
               Frame().push({
                 name,
                 number,
                 othertext,
               });
+              // and then sync it ot the server.
               sync();
+
+              // finally, wipe out the typed in values.
               setName("");
               setNumber(0);
               setOtherText("");
